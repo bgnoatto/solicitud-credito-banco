@@ -1,0 +1,58 @@
+spring:
+  profiles:
+        active: dev
+        
+    
+  ms:
+    datasource:    
+            type: com.zaxxer.hikari.HikariDataSource
+            poolName: promotionMsPool
+            minimumIdle: 20
+            maximumPoolSize: 30
+            idleTimeout: 5000
+            connectionTestQuery: select 1
+            driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+            url: jdbc:sqlserver://10.4.100.128:1433;databaseName=rumbo_qas
+            username: rumbo
+            password: rumbo09
+            cachePrepStmts: true
+            prepStmtCacheSize: 500
+            prepStmtCacheSqlLimit: 2048
+            useServerPrepStmts: true           
+
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServer2012Dialect
+    show-sql: true
+    format_sql: true
+    database: SQL_SERVER
+    openInView: false
+    generate-ddl: false
+    properties:
+              javax:
+                    persistence:
+                                sharedCache:
+                                            mode: ENABLE_SELECTIVE
+              hibernate:
+                        cache:
+                              region:
+                                     factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+                              ehcache:
+                                      configurationResourceName: /ehcache_hibernate.xml
+                              use_second_level_cache: true
+                              use_query_cache: true
+                              generate_statistics: true                                     
+    hibernate:
+           ddl-auto: none
+           naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+
+sso:
+  uri: http://10.4.101.107:18001/sso/
+  context-path: /sso
+  resources:
+    userInfoUri: ${sso.uri}/user
+    userCarsaInfoUri: ${sso.uri}/user/me
+  auth:
+    checkTokenUri: ${sso.uri}/oauth/check_token       
+
+server:
+    port: 8093
